@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>World Time Zones</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    h1 { margin-top: 40px; font-size: 3em; }
+    .zones { margin-top: 40px; }
+    button {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid white;
+      border-radius: 12px;
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 1.2em;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background: white; color: #00f2fe; }
+    #output { margin-top: 30px; font-size: 1.8em; }
+  </style>
+</head>
+<body>
+  <h1>World Time Zones</h1>
+  <p>Select a GMT offset:</p>
+  <div class="zones">
+    <button onclick="showTime('+6:00')">GMT +6:00</button>
+    <button onclick="showTime('+0:00')">GMT +0:00</button>
+    <button onclick="showTime('-5:00')">GMT -5:00</button>
+  </div>
+  <div id="output"></div>
+
+  <script>
+    function showTime(offset) {
+      const now = new Date();
+      const [sign, h, m] = offset.match(/([+-])(\d+):(\d+)/);
+      let hours = parseInt(h), minutes = parseInt(m);
+      let totalOffset = (hours * 60 + minutes) * (sign === '+' ? 1 : -1);
+      let utc = now.getTime() + now.getTimezoneOffset() * 60000;
+      let local = new Date(utc + totalOffset * 60000);
+      document.getElementById("output").innerText =
+        `Current time in GMT ${offset}: ${local.toLocaleTimeString()}`;
+    }
+  </script>
+</body>
+</html>
